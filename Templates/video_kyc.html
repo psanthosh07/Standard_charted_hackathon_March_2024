@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video KYC</title>
+</head>
+<body>
+    <h1>Video KYC</h1>
+    <form id="registerForm">
+        <input type="text" name="name" placeholder="Name">
+        <input type="text" name="dob" placeholder="Date of Birth">
+        <input type="text" name="email" placeholder="Email">
+        <input type="hidden" name="imageData" id="imageData">
+        <button type="button" id="captureButton">Capture Image</button>
+        <button type="submit">Register</button>
+    </form>
+    
+    <div id="videoContainer">
+        <!-- Video stream will be rendered here -->
+        <video id="video" width="400" height="300" autoplay></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+    </div>
+    
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('captureButton');
+        
+        // Access user's camera and stream video
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing camera:', error);
+            });
+        
+        // Function to capture image from video stream
+        function captureImage() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert canvas image to data URL
+            const imageDataURL = canvas.toDataURL('image/jpeg');
+            
+            // Set the captured image data to the hidden input field
+            document.getElementById('imageData').value = imageDataURL;
+        }
+        
+        // Event listener for capture button
+        captureButton.addEventListener('click', () => {
+            captureImage();
+        });
+    </script>
+</body>
+</html>

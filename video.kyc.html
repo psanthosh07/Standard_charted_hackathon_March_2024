@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video KYC</title>
+</head>
+<body>
+    <h1>Video KYC</h1>
+    <form id="registerForm">
+        <input type="text" name="name" placeholder="Name">
+        <input type="text" name="dob" placeholder="Date of Birth">
+        <input type="text" name="email" placeholder="Email">
+        <button type="submit">Register</button>
+    </form>
+    
+    <div id="videoContainer">
+        <!-- Video chat interface will be rendered here -->
+    </div>
+    
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(registerForm);
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    body: JSON.stringify(Object.fromEntries(formData.entries())),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                console.log(data);
+                // Initialize video call after registration
+                // Render video chat interface
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
