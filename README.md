@@ -2,6 +2,9 @@
 
 ![Video KYC](https://t4.ftcdn.net/jpg/05/28/03/93/360_F_528039398_6mdZc3rRfE2mHE1mndxp98e20Jbkub98.jpg)
 
+Firebase Video link: https://drive.google.com/file/d/1B23ehJdXMIX8TErODXEfoFHfkl7e9LMC/view?usp=sharing
+Application Video: https://drive.google.com/file/d/1SKD5j_fjRjiHOO17Ey8tqEm5V7jhb4Yl/view?usp=drive_link
+
 A web-based system for conducting video KYC (Know Your Customer) sessions. This system allows users to register themselves by providing necessary details and conduct video-based KYC sessions for identity verification purposes.
 
 ## Features
