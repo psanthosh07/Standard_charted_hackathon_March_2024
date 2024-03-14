@@ -1,50 +1,32 @@
 import csv
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/static')
 
-# Endpoint for serving video KYC HTML file
+# Endpoint for serving the main page
 @app.route('/')
-def serve_html():
-    return render_template('video_kyc.html')
+def serve_main_page():
+    return render_template('mainpage.html')
 
-# Endpoint for user registration
-@app.route('/register', methods=['POST', 'GET'])
-def register_user():
-    if request.method == 'POST':
-        try:
-            data = request.form.to_dict()
-            name = data.get('name')
-            dob = data.get('dob')
-            email = data.get('email')
-            imageData = data.get('imageData')
-            
-            if not name or not dob or not email or not imageData:
-                return jsonify({'error': 'Missing required fields'}), 400
-            
-            # Write data to CSV file
-            with open('user_data.csv', mode='a', newline='') as file:
-                writer = csv.DictWriter(file, fieldnames=['name', 'dob', 'email', 'imageData'])
-                if file.tell() == 0:
-                    writer.writeheader()  # Write header if file is empty
-                writer.writerow(data)
-            
-            print("User registered successfully:", data)  # Debugging print statement
-            return jsonify({'message': 'User registered successfully'})
-        except Exception as e:
-            print("Error registering user:", str(e))  # Debugging print statement
-            return jsonify({'error': 'An error occurred while registering the user'}), 500
-    else:
-        return "Method Not Allowed", 405
+# Endpoint for serving the login page for company employees
+@app.route('/login')
+def serve_login_page():
+    return render_template('templates/login.html')
 
-# Endpoint for video KYC session
-@app.route('/video-kyc', methods=['POST'])
-def start_video_kyc():
-    # Sample logic for video KYC
-    # You can integrate video conferencing APIs here
-    # and perform KYC process
-    
-    return jsonify({'message': 'Video KYC completed successfully'})
+# Endpoint for serving the registration page for regular users
+@app.route('/register')
+def serve_registration_page():
+    return render_template('templates/registration.html')
+
+# Endpoint for capturing image after user registration
+@app.route('/capture', methods=['POST'])
+def capture_image():
+    try:
+        # Assuming image is captured and processed here
+        # For simplicity, just displaying a success message
+        return jsonify({'message': 'Registered successfully'})
+    except Exception as e:
+        return jsonify({'error': 'An error occurred during image capture'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

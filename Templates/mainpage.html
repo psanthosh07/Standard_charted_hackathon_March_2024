@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primary Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to our website</h1>
+        <p>Please select your role:</p>
+        <form id="roleForm">
+            <input type="radio" id="employee" name="role" value="employee">
+            <label for="employee">Company Employee</label><br>
+            <input type="radio" id="user" name="role" value="user">
+            <label for="user">Regular User</label><br>
+            <button type="button" onclick="submitForm()">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function submitForm() {
+            var form = document.getElementById("roleForm");
+            var selectedRole = form.querySelector('input[name="role"]:checked');
+
+            if (selectedRole) {
+                if (selectedRole.value === "employee") {
+                    window.location.href = "Templates/login.html"; // Redirect to employee login page
+                } else if (selectedRole.value === "user") {
+                    window.location.href = "registration.html"; // Redirect to user registration page
+                }
+            } else {
+                alert("Please select a role.");
+            }
+        }
+    </script>
+</body>
+</html>

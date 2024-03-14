@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video KYC - Registration</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Registration</h1>
+        <form id="registerForm" class="form">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="date" name="dob" placeholder="Date of Birth" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="address" placeholder="Address" required>
+            <input type="text" name="panAadhaar" placeholder="PAN Card / Aadhaar" required>
+            <input type="text" name="signature" placeholder="Signature" required>
+            <select name="incomeRange" required>
+                <option value="" disabled selected>Income Range</option>
+                <option value="< 50,000">Less than 50,000</option>
+                <option value="50,000 - 1,00,000">50,000 - 1,00,000</option>
+                <option value="> 1,00,000">Greater than 1,00,000</option>
+            </select>
+            <select name="employmentType" required>
+                <option value="" disabled selected>Type of Employment</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Self-employed">Self-employed</option>
+                <option value="Unemployed">Unemployed</option>
+            </select>
+            <button type="submit" class="button">Register</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Retrieve form data
+            var formData = new FormData(this);
+
+            // Simulate registration process
+            // Assuming the registration is successful, redirect to capture.html
+            window.location.href = "capture.html";
+        });
+    </script>
+</body>
+</html>
