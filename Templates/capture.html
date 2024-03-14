@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video KYC - Capture</title>
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Video KYC - Capture Image</h1>
+        <div class="video-container">
+            <video id="video" width="400" height="300" autoplay></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+            <button id="captureButton" class="button">Capture Image</button>
+            <button id="retryButton" class="button" style="display: none;">Retake Image</button>
+            <button id="submitButton" class="button" style="display: none;">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var videoStream;
+
+            function startCamera() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        var video = document.getElementById('video');
+                        videoStream = stream;
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .catch(function(err) {
+                        console.error('Error accessing the camera:', err);
+                    });
+                }
+            }
+
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            var video = document.getElementById('video');
+            var captureButton = document.getElementById('captureButton');
+            var retryButton = document.getElementById('retryButton');
+            var submitButton = document.getElementById('submitButton');
+
+            captureButton.addEventListener('click', function() {
+                // Set canvas dimensions to match video dimensions
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                // Pause the video
+                video.pause();
+                // Draw the current frame onto the canvas
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                // Stop the video stream
+                if (videoStream) {
+                    videoStream.getTracks().forEach(track => track.stop());
+                }
+                // Hide the video element
+                video.style.display = 'none';
+                // Show the canvas element
+                canvas.style.display = 'block';
+                // Hide the capture button
+                captureButton.style.display = 'none';
+                // Show the retry button
+                retryButton.style.display = 'inline-block';
+                // Show the submit button
+                submitButton.style.display = 'inline-block';
+            });
+
+            retryButton.addEventListener('click', function() {
+                // Show video element
+                video.style.display = 'block';
+                // Hide canvas element
+                canvas.style.display = 'none';
+                // Show capture button
+                captureButton.style.display = 'inline-block';
+                // Hide retry button
+                retryButton.style.display = 'none';
+                // Hide submit button
+                submitButton.style.display = 'none';
+                // Restart camera
+                startCamera();
+            });
+
+            submitButton.addEventListener('click', function() {
+                // Display success message
+                alert("Registered successfully");
+            });
+
+            // Start the camera initially
+            startCamera();
+        });
+    </script>
+</body>
+</html>
