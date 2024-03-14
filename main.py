@@ -1,7 +1,13 @@
-import csv
+import firebase_admin
+from firebase_admin import credentials, firestore
 from flask import Flask, request, jsonify, render_template
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
+
+# Initialize Firebase Admin SDK
+cred = credentials.Certificate(r"C:\Users\Santhosh\Desktop\Standard_charted_hackathon_March_2024\Standard_charted_hackathon_March_2024\serviceaccountkey.json")  # Replace with your service account key path
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 # Endpoint for serving video KYC HTML file
 @app.route('/')
@@ -17,17 +23,29 @@ def register_user():
             name = data.get('name')
             dob = data.get('dob')
             email = data.get('email')
+            address = data.get('address')
+            pan_aadhaar = data.get('panAadhaar')
+            signature = data.get('signature')
+            income_range = data.get('incomeRange')
+            employment_type = data.get('employmentType')
             imageData = data.get('imageData')
             
-            if not name or not dob or not email or not imageData:
+            if not all([name, dob, email, address, pan_aadhaar, signature, income_range, employment_type, imageData]):
                 return jsonify({'error': 'Missing required fields'}), 400
             
-            # Write data to CSV file
-            with open('user_data.csv', mode='a', newline='') as file:
-                writer = csv.DictWriter(file, fieldnames=['name', 'dob', 'email', 'imageData'])
-                if file.tell() == 0:
-                    writer.writeheader()  # Write header if file is empty
-                writer.writerow(data)
+            # Add user data to Firestore
+            users_ref = db.collection('users')
+            users_ref.add({
+                'name': name,
+                'dob': dob,
+                'email': email,
+                'address': address,
+                'pan_aadhaar': pan_aadhaar,
+                'signature': signature,
+                'income_range': income_range,
+                'employment_type': employment_type,
+                'imageData': imageData
+            })
             
             print("User registered successfully:", data)  # Debugging print statement
             return jsonify({'message': 'User registered successfully'})
